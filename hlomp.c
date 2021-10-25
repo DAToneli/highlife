@@ -4,16 +4,32 @@
 
 #define N 2048
 #define NT 8
-#define MAX 30
+#define MAX 2000
 
 
-int getNeighbors(int **grid, int i, int j) {
-    int x, y, viz = 0;
+int getNeighbors(int **grid, int x, int y) {
+    int dx, dy, viz = 0;
 
-    for(x = -1; x < 2; x++) {
-        for(y = -1; y < 2; y++) {
-            if((i+x) >= 0 && (i+x) < N && (j+y) >= 0 && (j+y) < N) {
-                if(x != 0 || y != 0) viz += grid[i+x][j+y];
+    for(dx = -1; dx < 2; dx++) {
+        for(dy = -1; dy < 2; dy++) {
+            if((x + dx) >= 0 && (x + dx) < N && (y + dy) >= 0 && (y + dy) < N) {
+            	if(dx != 0 || dy != 0) viz += grid[x + dx][y + dy];
+            } else if((x + dx) == -1) {
+            	if((y + dy) >= 0 && (y + dy) < N) viz += grid[N - 1][y + dy];
+            	else if((y + dy) == -1) viz += grid[N - 1][N - 1];
+            	else viz += grid[N - 1][0];
+            } else if((x + dx) == N) {
+            	if((y + dy) >= 0 && (y + dy) < N) viz += grid[0][y + dy];
+            	else if((y + dy) == -1) viz += grid[0][N - 1];
+            	else viz += grid[0][0];
+            } else if((y + dy) == -1) {
+            	if((x + dx) >= 0 && (x + dx) < N) viz += grid[x + dx][N - 1];
+            	else if((x + dx) == -1) viz += grid[N - 1][N - 1];
+            	else viz += grid[0][N - 1];
+            } else {
+            	if((x + dx) >= 0 && (x + dx) < N) viz += grid[x + dx][0];
+            	else if((x + dx) == -1) viz += grid[N - 1][0];
+            	else viz += grid[0][0];
             }
         }
     }
